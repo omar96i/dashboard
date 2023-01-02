@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Company\Company;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,7 +19,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'company_id',
+        'user_id',
         'email',
         'password',
     ];
@@ -41,4 +43,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Relacion con la tabla companies.
+    */
+    public function company(){
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    /**
+     * Relacion con la tabla users.
+    */
+    public function users_created(){
+        return $this->hasMany(User::class, 'user_id');
+    }
+
+    /**
+     * Relacion con la tabla users.
+    */
+    public function created_by(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
