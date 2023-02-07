@@ -15,15 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            CompanySeeder::class,
-            MembershipSeeder::class,
-        ]);
-
         DB::table('users')->insert([
-            'company_id' => 1,
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'),
-        ]);
+			'email' => 'admin@hotmail.com',
+			'full_name' => 'admin',
+			'password' => bcrypt('12345'),
+			'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+			'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+		]);
     }
 }

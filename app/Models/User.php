@@ -2,25 +2,24 @@
 
 namespace App\Models;
 
-use App\Models\Company\Company;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    use HasRoles;
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'company_id',
-        'user_id',
+        'full_name',
         'email',
         'password',
     ];
@@ -43,25 +42,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * Relacion con la tabla companies.
-    */
-    public function company(){
-        return $this->belongsTo(Company::class, 'company_id');
-    }
-
-    /**
-     * Relacion con la tabla users.
-    */
-    public function users_created(){
-        return $this->hasMany(User::class, 'user_id');
-    }
-
-    /**
-     * Relacion con la tabla users.
-    */
-    public function created_by(){
-        return $this->belongsTo(User::class, 'user_id');
-    }
 }

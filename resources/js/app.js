@@ -18,8 +18,13 @@ window.Vue = require('vue').default;
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+import Vue from 'vue'
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('v-select', vSelect)
+Vue.component('login-index', require('./components/login/Index.vue').default);
+Vue.component('home-index', require('./components/Home.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
