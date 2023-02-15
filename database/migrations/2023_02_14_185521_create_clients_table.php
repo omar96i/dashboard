@@ -15,32 +15,19 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('created_by_user_id');
-            $table->unsignedBigInteger('route_id');
-            $table->date('binding_date');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('billing_address');
+            $table->bigInteger('id_card');
+            $table->string('full_name');
+            $table->string('address_billing');
+            $table->string('address');
             $table->string('landline');
+            $table->string('country_code');
             $table->string('phone');
-            $table->string('neighborhood');
+            $table->string('neighbothood');
             $table->string('description_business');
             $table->string('address_business');
             $table->string('phone_business');
             $table->string('email');
-            $table->string('order');
-            $table->string('status');
             $table->timestamps();
-
-            $table->foreign('created_by_user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
-
-            $table->foreign('route_id')
-                ->references('id')
-                ->on('routes')
-                ->onDelete('cascade');
         });
     }
 

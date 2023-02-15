@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePersonalReferencesTable extends Migration
+class CreateRoutesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,18 @@ class CreatePersonalReferencesTable extends Migration
      */
     public function up()
     {
-        Schema::create('personal_references', function (Blueprint $table) {
+        Schema::create('routes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('phone');
-            $table->string('address');
+            $table->unsignedBigInteger('business_id');
+            $table->string('name');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
-            $table->foreign('client_id')
+            //relations
+            $table->foreign('business_id')
                 ->references('id')
-                ->on('clients')
+                ->on('business')
                 ->onDelete('cascade');
         });
     }
@@ -35,6 +36,6 @@ class CreatePersonalReferencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personal_references');
+        Schema::dropIfExists('routes');
     }
 }
