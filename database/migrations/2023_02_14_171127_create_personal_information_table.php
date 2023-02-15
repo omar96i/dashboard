@@ -16,6 +16,7 @@ class CreatePersonalInformationTable extends Migration
         Schema::create('personal_information', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->bigInteger('id_card');
             $table->string('full_name', 100);
             $table->string('address');
             $table->string('landline', 50);

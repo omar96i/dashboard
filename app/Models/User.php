@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Business\Business;
+use App\Models\Route\Route;
+use App\Models\User\PersonalInformation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,6 +23,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'full_name',
+        'business_id',
+        'status',
         'email',
         'password',
     ];
@@ -42,4 +47,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //Relations
+
+    public function personal_information(){
+        return $this->hasOne(PersonalInformation::class, 'user_id');
+    }
+
+    public function business(){
+        return $this->belongsTo(Business::class, 'business_id');
+    }
+
+    public function routes(){
+        return $this->hasMany(Route::class, 'collector_id');
+    }
 }
