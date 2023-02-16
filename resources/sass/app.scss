@@ -6,3 +6,32 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+
+.swal2-container{
+    z-index: 2000 !important;
+}
+
+.waitContent{
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255,255,255,0.5) !important;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	border-radius: 10px;
+	text-align: center;
+}
+
+.waitContent p{
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+	font-weight: bold;
+}
+
+.waitContent>div{
+	position: absolute;
+	top: 30%;
+	left: 45%;
+}

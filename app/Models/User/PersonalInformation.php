@@ -19,6 +19,7 @@ class PersonalInformation extends Model
         'address',
         'landline',
         'country_code',
+        'iso',
         'phone',
         'city',
         'department',
@@ -29,5 +30,8 @@ class PersonalInformation extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
+
+
+
 
 }

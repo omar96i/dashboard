@@ -43,37 +43,29 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-item" style="">
+        <li class="menu-item @if(Route::is('business.index') || Route::is('user.index')) active open @endif " style="">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-user"></i>
+                <i class='menu-icon tf-icons bx bxs-business'></i>
                 <div data-i18n="Cuenta">Gestionar</div>
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
-                <a href="#" class="menu-link">
+                <li class="menu-item @if(Route::is('business.index')) active @endif ">
+                <a href="{{ route('business.index') }}" class="menu-link">
                     <div data-i18n="Mi perfil">Empresas</div>
                 </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item @if(Route::is('user.index')) active @endif">
                 <a href="{{ route('user.index') }}" class="menu-link">
                     <div data-i18n="Cerrar sesion">Usuarios</div>
                 </a>
                 </li>
                 <li class="menu-item">
-                <a href="#" class="menu-link">
-                    <div data-i18n="Cerrar sesion">Routes</div>
-                </a>
+                    <a href="#" class="menu-link">
+                        <div data-i18n="Cerrar sesion">Routes</div>
+                    </a>
                 </li>
             </ul>
-        </li>
-        <li class="menu-item">
-            <li class="menu-item">
-                <a href="" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-detail"></i>
-                    <div data-i18n="Analytics">Opcion 1</div>
-                </a>
-            </li>
         </li>
     </ul>
 </aside>

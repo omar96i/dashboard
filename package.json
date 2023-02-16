@@ -25,6 +25,9 @@
     },
     "dependencies": {
         "jquery": "^3.6.3",
-        "vue-select": "^3.20.2"
+        "vue-select": "^3.20.2",
+        "vue-simple-alert": "^1.1.1",
+        "vue-tel-input": "^5.12.0",
+        "vue2-simplert-plugin": "^0.6.0-beta.2"
     }
 }
