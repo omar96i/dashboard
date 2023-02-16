@@ -21,6 +21,7 @@ class CreatePersonalInformationTable extends Migration
             $table->string('address');
             $table->string('landline', 50);
             $table->string('country_code', 10);
+            $table->string('iso', 10);
             $table->string('phone', 10);
             $table->string('city');
             $table->string('department');

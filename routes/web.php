@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-
-    return Business::with('users.personal_information')->get();
+    return auth()->user()->roles->pluck('name');
 });
 
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login');
@@ -33,5 +32,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/delete/{user}', [App\Http\Controllers\User\UserController::class, 'delete'])->name('user.delete');
         Route::post('/store', [App\Http\Controllers\User\UserController::class, 'store'])->name('user.store');
         Route::post('/update/{user}', [App\Http\Controllers\User\UserController::class, 'update'])->name('user.update');
+
+        Route::group(['prefix' => 'Role'], function () {
+            Route::get('/get', [App\Http\Controllers\User\UserController::class, 'getRoles'])->name('user.role.get');
+        });
+    });
+
+    Route::group(['prefix' => 'Business'], function () {
+        Route::get('/get', [App\Http\Controllers\Business\BusinessController::class, 'get'])->name('business.get');
     });
 });

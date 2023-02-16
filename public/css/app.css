@@ -10819,3 +10819,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.swal2-container {
+  z-index: 2000 !important;
+}

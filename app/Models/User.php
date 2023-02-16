@@ -61,4 +61,21 @@ class User extends Authenticatable
     public function routes(){
         return $this->hasMany(Route::class, 'collector_id');
     }
+
+    // functiones
+    public static function validarEmail($email){
+        return self::where('email', $email)->count();
+    }
+
+    // Mutadores
+    public function getRoleUserAttribute()
+    {
+        return $this->getRoleNames();
+    }
+
+    ////Auto encriptado
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 }

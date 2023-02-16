@@ -24,6 +24,13 @@ import 'vue-select/dist/vue-select.css';
 global.jQuery = require('jquery');
 var $ = global.jQuery;
 window.$ = $;
+import VueSimpleAlert from "vue-simple-alert";
+
+Vue.use(VueSimpleAlert, { reverseButtons: true });
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/dist/vue-tel-input.css';
+
+Vue.use(VueTelInput);
 Vue.component('v-select', vSelect)
 Vue.component('login-index', require('./components/login/Index.vue').default);
 Vue.component('home-index', require('./components/Home.vue').default);
