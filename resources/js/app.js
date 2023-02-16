@@ -35,6 +35,7 @@ Vue.component('v-select', vSelect)
 Vue.component('login-index', require('./components/login/Index.vue').default);
 Vue.component('home-index', require('./components/Home.vue').default);
 Vue.component('user-index', require('./components/user/Index.vue').default);
+Vue.component('business-index', require('./components/business/Index.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

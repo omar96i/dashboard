@@ -2,6 +2,7 @@
 
 use App\Models\Business\Business;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Business\BusinessController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,5 +41,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['prefix' => 'Business'], function () {
         Route::get('/get', [App\Http\Controllers\Business\BusinessController::class, 'get'])->name('business.get');
+    });
+
+    Route::group(['prefix' => 'Business'], function () {
+        Route::get('/', [BusinessController::class, 'index'])->name('business.index');
+        Route::get('/get', [BusinessController::class, 'get'])->name('business.get');
+        Route::post('/store', [BusinessController::class, 'store'])->name('business.store');
+        Route::post('/update/{business}', [BusinessController::class, 'update'])->name('business.update');
     });
 });

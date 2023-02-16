@@ -11,7 +11,7 @@
         <div class="card">
             <div class="d-flex align-items-end row">
                 <div id="app">
-                    <home-index></home-index>
+                    <business-index></business-index>
                 </div>
             </div>
         </div>
