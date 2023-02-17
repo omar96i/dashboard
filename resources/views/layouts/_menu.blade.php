@@ -14,7 +14,7 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item">
-            <a href="" class="menu-link">
+            <a href="{{ route('home') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Inicio</div>
             </a>
@@ -24,15 +24,15 @@
             <span class="menu-header-text">Administrar</span>
         </li>
 
-        <li class="menu-item" style="">
+        <li class="menu-item @if(Route::is('user.profile.index')) active open @endif" style="">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Cuenta">Cuenta</div>
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
-                <a href="#" class="menu-link">
+                <li class="menu-item @if(Route::is('user.profile.index')) active @endif ">
+                <a href="{{ route('user.profile.index') }}" class="menu-link">
                     <div data-i18n="Mi perfil">Mi perfil</div>
                 </a>
                 </li>

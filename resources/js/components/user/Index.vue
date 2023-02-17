@@ -163,7 +163,7 @@ export default {
         },
 
         loadTable(){
-            $("#table_users").DataTable()
+            //$("#table_users").DataTable()
         },
 
         alert(titulo, text, tipo){

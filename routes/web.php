@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::group(['prefix' => 'User'], function () {
+
         Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('user.index');
         Route::get('/get', [App\Http\Controllers\User\UserController::class, 'get'])->name('user.get');
         Route::get('/delete/{user}', [App\Http\Controllers\User\UserController::class, 'delete'])->name('user.delete');
@@ -36,6 +37,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::group(['prefix' => 'Role'], function () {
             Route::get('/get', [App\Http\Controllers\User\UserController::class, 'getRoles'])->name('user.role.get');
+        });
+
+        Route::group(['prefix' => 'Profile'], function () {
+            Route::view('/' ,'user.profile')->name('user.profile.index');
         });
     });
 

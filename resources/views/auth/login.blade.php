@@ -68,8 +68,6 @@
                     </a>
                 </div>
                 <!-- /Logo -->
-                <h4 class="mb-2">Bienvenido a Empresa! 👋</h4>
-                <p class="mb-4">Porfavor ingresa tu usuario y contraseña para empezar a administrar tu empresa</p>
                     <div id="app">
                         <login-index></login-index>
                     </div>

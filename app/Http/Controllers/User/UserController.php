@@ -22,21 +22,16 @@ class UserController extends Controller
         if(User::validarEmail($request->user['email']) > 0){
             return response()->json(['status' => false, 'msg' => 'El correo ingresado ya se encuentra registrado']);
         }
-        if(auth()->user()->business_id == $request->personal_information->business_id || auth()->user()->roles->pluck('name')[0] == 'super.admin'){
-            $user = new User($request->user);
-            $user->save();
+        $user = new User($request->user);
+        $user->save();
 
-            $user->assignRole($request->role);
+        $user->assignRole($request->role);
 
-            $personal_information = new PersonalInformation($request->personal_information);
-            $personal_information->user_id = $user->id;
-            $personal_information->save();
+        $personal_information = new PersonalInformation($request->personal_information);
+        $personal_information->user_id = $user->id;
+        $personal_information->save();
 
-            return response()->json(['status' => true, 'user' => $user->load('personal_information', 'business')]);
-        }
-
-        return response()->json(['status' => false, 'msg' => 'No tienes permisos para realizar esta accion']);
-
+        return response()->json(['status' => true, 'user' => $user->load('personal_information', 'business')]);
     }
 
     public function update(User $user, Request $request){
