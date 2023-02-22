@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Business;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Business\Business;
+use App\Models\User;
+use App\Models\User\PersonalInformation;
 
 class BusinessController extends Controller {
 
@@ -42,4 +44,24 @@ class BusinessController extends Controller {
 
 		return response()->json($data);
 	}
+
+	public function delete(Business $business){
+		$business->delete();
+        return response()->json(['status' => true]);
+	}
+
+	public function getCollectors(Business $business){
+		
+		$collectors = User::with('personal_information')->where('business_id','=',$business->id)
+														->role('cobrador')
+														->get();
+		
+
+		/*$collector_aux = PersonalInformation::whereHas('user', function($query) use ($business){
+			$query->where('business_id','=',$business->id);
+		})->get();*/
+
+        return response()->json(['status'=>true, 'business'=>$business, 'collectors'=>$collectors]);
+	}
+
 }

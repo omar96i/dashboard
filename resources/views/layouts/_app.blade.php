@@ -33,7 +33,8 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-            @include('layouts._navbar')
+          <!-- Comentado temporalmente -->
+          @include('layouts._navbar') 
 
           <!-- / Navbar -->
 

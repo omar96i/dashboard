@@ -37,7 +37,7 @@
                         <div class="col-12 col-sm-6">
                             <div class="mb-3">
                                 <label class="form-label">Empresa</label>
-                                <v-select label="label" :options="business" v-model="data.user.business_id" :reduce="option => option.id" :class="[{'is-invalid' : validation.user.business_id }]"></v-select>
+                                <v-select label="label" :options="business" v-model="data.user.business_id" :reduce="option => option.id" :class="[{'is-invalid' : validation.user.business_id }]" :disabled="$parent.role=='admin'" ></v-select>
                                 <div class="invalid-feedback">
                                     Por favor Selecciona una empresa
                                 </div>
@@ -217,6 +217,9 @@ export default{
             this.data.personal_information.phone = this.user.personal_information.phone
         }
 
+        if (this.$parent.business_id) {
+            this.data.user.business_id = parseInt(this.$parent.business_id);
+        }
     },
     methods:{
         setCountry(event){

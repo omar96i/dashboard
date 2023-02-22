@@ -36,7 +36,7 @@
                             <td>{{ user.personal_information.department }}</td>
                             <td>
                                 <button @click="editUser(user)" class="btn btn-sm"><i class='bx bx-edit'></i></button>
-                                <button @click="deleteUser(user.id)" class="btn btn-sm"><i class='bx bx-trash' ></i></button>
+                                <button @click="deleteUser(user.id)" class="btn btn-sm"><i class='bx bx-trash'></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -55,6 +55,7 @@ export default {
         'form-modal' : Modal,
         Spinner
     },
+    props:['role', 'business_id'],
     data(){
         return{
             users:{},
@@ -97,6 +98,7 @@ export default {
         getUser(){
             this.loading = false
             axios.get(`/User/get`).then(res=>{
+                console.log(res.data)
                 this.users = res.data.users
                 this.loading = true
                 setTimeout(()=>{
@@ -163,7 +165,7 @@ export default {
         },
 
         loadTable(){
-            //$("#table_users").DataTable()
+            $("#table_users").DataTable()
         },
 
         alert(titulo, text, tipo){

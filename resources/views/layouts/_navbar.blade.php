@@ -1,5 +1,11 @@
 <!-- Navbar -->
-<nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+<div class="d-block d-xl-none px-3 mt-3 layout-menu-toggle navbar-nav">
+    <a class="d-inline-block nav-item nav-link p-2 m-0 bg-navbar-theme rounded" href="javascript:void(0)">
+        <i class="bx bx-menu bx-sm"></i>
+    </a>
+</div>
+
+<nav class="d-none layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
         <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
             <i class="bx bx-menu bx-sm"></i>

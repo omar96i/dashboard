@@ -36,6 +36,8 @@ Vue.component('login-index', require('./components/login/Index.vue').default);
 Vue.component('home-index', require('./components/Home.vue').default);
 Vue.component('user-index', require('./components/user/Index.vue').default);
 Vue.component('business-index', require('./components/business/Index.vue').default);
+Vue.component('route-index', require('./components/route/Index.vue').default);
+Vue.component('route-admin-index', require('./components/route/admin/Index.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

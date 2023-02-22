@@ -11,7 +11,7 @@
         <div class="card">
             <div class="d-flex align-items-end row">
                 <div id="app">
-                    <user-index></user-index>
+                    <user-index role="{{ auth()->user()->roles->pluck('name')[0] }}" business_id="{{ auth()->user()->business_id }}"></user-index>
                 </div>
             </div>
         </div>

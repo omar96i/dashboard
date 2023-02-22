@@ -3,6 +3,8 @@
 use App\Models\Business\Business;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Business\BusinessController;
+use App\Http\Controllers\Route\RouteController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,8 @@ use App\Http\Controllers\Business\BusinessController;
 */
 
 Route::get('/test', function () {
-    return auth()->user()->roles->pluck('name');
+    /*return auth()->user()->roles->pluck('name');*/
+    return User::with('personal_information', 'business', 'roles')->where('id', '!=', 1)->where('business_id','=', auth()->user()->business_id )->get();
 });
 
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login');
@@ -40,13 +43,19 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::group(['prefix' => 'Business'], function () {
-        Route::get('/get', [App\Http\Controllers\Business\BusinessController::class, 'get'])->name('business.get');
-    });
-
-    Route::group(['prefix' => 'Business'], function () {
         Route::get('/', [BusinessController::class, 'index'])->name('business.index');
         Route::get('/get', [BusinessController::class, 'get'])->name('business.get');
         Route::post('/store', [BusinessController::class, 'store'])->name('business.store');
         Route::post('/update/{business}', [BusinessController::class, 'update'])->name('business.update');
+        Route::post('/delete/{business}', [BusinessController::class, 'delete'])->name('business.delete');
+        Route::get('/getCollectors/{business}', [BusinessController::class, 'getCollectors'])->name('business.getCollectors');
+    });
+
+    Route::group(['prefix' => 'Route'], function () {
+        Route::get('/', [RouteController::class, 'index'])->name('route.index');
+        Route::get('/get', [RouteController::class, 'get'])->name('route.get');
+        Route::post('/store', [RouteController::class, 'store'])->name('route.store');
+        Route::post('/update/{route}', [RouteController::class, 'update'])->name('route.update');
+        Route::post('/delete/{route}', [RouteController::class, 'delete'])->name('route.delete');
     });
 });
