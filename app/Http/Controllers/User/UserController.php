@@ -15,7 +15,14 @@ class UserController extends Controller
     }
 
     public function get(){
-        return response()->json(['status' => true, 'users' => User::with('personal_information', 'business', 'roles')->where('id', '!=', 1)->get()]);
+        $users = [];
+        if (auth()->user()->roles->pluck('name')[0] == 'super.admin') {
+            $users = User::with('personal_information', 'business', 'roles')->where('id', '!=', 1)->role('admin')->get();
+        }else if(auth()->user()->roles->pluck('name')[0] == 'admin'){
+            $users = User::with('personal_information', 'business', 'roles')->where('id', '!=', 1)->where('business_id','=', auth()->user()->business_id )->get();
+        }
+
+        return response()->json(['status' => true, 'users' => $users ]);
     }
 
     public function store(Request $request){

@@ -68,10 +68,10 @@ class User extends Authenticatable
     }
 
     // Mutadores
-    public function getRoleUserAttribute()
+    /*public function getRoleUserAttribute()
     {
         return $this->getRoleNames();
-    }
+    }*/
 
     ////Auto encriptado
     public function setPasswordAttribute($value)

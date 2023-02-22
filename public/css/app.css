@@ -10843,6 +10843,6 @@ textarea.form-control-lg {
 
 .waitContent > div {
   position: absolute;
-  top: 30%;
-  left: 45%;
+  top: 40%;
+  width: 100%;
 }
