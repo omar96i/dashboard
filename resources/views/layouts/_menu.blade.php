@@ -20,13 +20,8 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-<<<<<<< HEAD
-        <li class="menu-item">
-            <a href="{{ route('home') }}" class="menu-link">
-=======
         <!-- <li class="menu-item">
             <a href="" class="menu-link">
->>>>>>> a25a5ef0f8a3fe153b6ccf0ee51588e38cca3b45
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Inicio</div>
             </a>
