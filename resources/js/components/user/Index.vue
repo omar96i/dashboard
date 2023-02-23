@@ -98,6 +98,7 @@ export default {
         getUser(){
             this.loading = false
             axios.get(`/User/get`).then(res=>{
+                console.log("Datos servidor: ")
                 console.log(res.data)
                 this.users = res.data.users
                 this.loading = true

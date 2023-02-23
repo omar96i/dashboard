@@ -31,7 +31,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::group(['prefix' => 'User'], function () {
-
         Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('user.index');
         Route::get('/get', [App\Http\Controllers\User\UserController::class, 'get'])->name('user.get');
         Route::get('/delete/{user}', [App\Http\Controllers\User\UserController::class, 'delete'])->name('user.delete');
@@ -52,7 +51,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get', [BusinessController::class, 'get'])->name('business.get');
         Route::post('/store', [BusinessController::class, 'store'])->name('business.store');
         Route::post('/update/{business}', [BusinessController::class, 'update'])->name('business.update');
-        Route::post('/delete/{business}', [BusinessController::class, 'delete'])->name('business.delete');
+        Route::get('/delete/{business}', [BusinessController::class, 'delete'])->name('business.delete');
         Route::get('/getCollectors/{business}', [BusinessController::class, 'getCollectors'])->name('business.getCollectors');
     });
 
@@ -61,6 +60,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get', [RouteController::class, 'get'])->name('route.get');
         Route::post('/store', [RouteController::class, 'store'])->name('route.store');
         Route::post('/update/{route}', [RouteController::class, 'update'])->name('route.update');
-        Route::post('/delete/{route}', [RouteController::class, 'delete'])->name('route.delete');
+        Route::get('/delete/{route}', [RouteController::class, 'delete'])->name('route.delete');
     });
 });

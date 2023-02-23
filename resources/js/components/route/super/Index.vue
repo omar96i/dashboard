@@ -39,7 +39,7 @@
 </template>
 <script>
 	import Modal from './Modal.vue'
-	import Spinner from '../custom/Spinner.vue'
+	import Spinner from '../../custom/Spinner.vue'
 
 	export default{
 		components:{
@@ -107,7 +107,7 @@
 	                if(result.value){
 						this.loading_spinner = true
 						this.text_spinner = "Eliminando Ruta"
-						axios.post(`/Route/delete/${route.id}`).then(res=>{
+						axios.get(`/Route/delete/${route.id}`).then(res=>{
 							if(res.data.status){
 			                    var index = _.findIndex(this.routes, function(o) { return o.id == route.id; });
 			                    this.routes.splice(index, 1)

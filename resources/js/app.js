@@ -21,14 +21,15 @@ window.Vue = require('vue').default;
 import Vue from 'vue'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
+import VueSimpleAlert from "vue-simple-alert";
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/dist/vue-tel-input.css';
+
 global.jQuery = require('jquery');
 var $ = global.jQuery;
 window.$ = $;
-import VueSimpleAlert from "vue-simple-alert";
 
 Vue.use(VueSimpleAlert, { reverseButtons: true });
-import VueTelInput from 'vue-tel-input';
-import 'vue-tel-input/dist/vue-tel-input.css';
 
 Vue.use(VueTelInput);
 Vue.component('v-select', vSelect)
@@ -36,7 +37,7 @@ Vue.component('login-index', require('./components/login/Index.vue').default);
 Vue.component('home-index', require('./components/Home.vue').default);
 Vue.component('user-index', require('./components/user/Index.vue').default);
 Vue.component('business-index', require('./components/business/Index.vue').default);
-Vue.component('route-index', require('./components/route/Index.vue').default);
+Vue.component('route-super-index', require('./components/route/super/Index.vue').default);
 Vue.component('route-admin-index', require('./components/route/admin/Index.vue').default);
 
 /**
@@ -48,3 +49,16 @@ Vue.component('route-admin-index', require('./components/route/admin/Index.vue')
 const app = new Vue({
     el: '#app',
 });
+
+Vue.prototype.$alertGlobal = function(objOtitulo='', text='', type='', confirmButtonText='Ok') {
+  	if (text!='') {
+        this.$fire({
+            title: objOtitulo,
+            text: text,
+            type: type,
+            confirmButtonText: confirmButtonText
+        })
+    } else {
+        this.$fire(objOtitulo)
+    }
+};

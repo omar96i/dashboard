@@ -12,63 +12,115 @@ use Spatie\Permission\Models\Role;
 class RouteController extends Controller {
     
 	public function index(){
-		return view("route.index");
+		if (auth()->user()->roles->pluck('name')[0] == 'super.admin') {
+			$routes = [];
+            $routes = Route::with('business', 'route_collector.collector.personal_information')->get();
+			$data = [
+						'status'=>true,
+						'routes'=>$routes,
+						'business'=>Business::get()
+				    ];
+			return view("route.index", $data);
+        }else if(auth()->user()->roles->pluck('name')[0] == 'admin'){
+            $routes = [];
+            $routes = Route::with('business', 'route_collector.collector.personal_information')->where('business_id','=', auth()->user()->business_id )->get();
+			$data = [
+						'status'=>true,
+						'routes'=>$routes,
+						'business'=>Business::get()
+				    ];
+			return view("route.index", $data);
+        }
+        return $this->unauthorizedAccess();
 	}
 
 	public function get(){
-		$routes = [];
 		if (auth()->user()->roles->pluck('name')[0] == 'super.admin') {
-            $routes = Route::with('business', 'route_collector.collector.personal_information')->get();
+			$routes = Route::with('business', 'route_collector.collector.personal_information')->get();
+			$data = [
+						'status'=>true,
+						'routes'=>$routes,
+						'business'=>Business::get()
+				    ];
+			return response()->json($data);
         }else if(auth()->user()->roles->pluck('name')[0] == 'admin'){
             $routes = Route::with('business', 'route_collector.collector.personal_information')->where('business_id','=', auth()->user()->business_id )->get();
+            $data = [
+						'status'=>true,
+						'routes'=>$routes,
+						'business'=>Business::get()
+				    ];
+			return response()->json($data);
         }
-
-		$data = [
-					'status'=>true,
-					'routes'=>$routes,
-					'business'=>Business::get()
-			    ];
-		return response()->json($data);
+        return $this->unauthorizedAccess();
 	}
 
 	public function store(Request $request){
-		$route = new Route($request->route);
-		$route->save();
-
-		$data = [
-					'status' => true,
-					'route' => $route->load('business', 'route_collector')
-				];
-
-		return response()->json($data);
+		if (auth()->user()->roles->pluck('name')[0] == 'super.admin') {
+			$route = new Route($request->route);
+			$route->save();
+			$data = [
+						'status' => true,
+						'route' => $route->load('business', 'route_collector')
+					];
+			return response()->json($data);
+		}
+		return $this->unauthorizedAccess();
 	}
 
 	public function update(Route $route, Request $request){
-		$route->update($request->route);
-		
-		RouteCollector::where('route_id', '=', $route->id)->update(['status'=>'inactive']);
-		
-		if ($request->route_collector['collector_id']) {
-			$new_route_collector = new RouteCollector([
-														'collector_id'=>$request->route_collector['collector_id'],
-														'route_id'=>$route->id,
-														'status'=>'active'
-													   ]);
-			$new_route_collector->save();
-		}
+		if (auth()->user()->roles->pluck('name')[0] == 'super.admin') {
+			$route->update($request->route);
+			$data = [
+						'status' => true,
+						'route' => $route->load('business', 'route_collector.collector.personal_information')
+					];
+			return response()->json($data);
+        }else if(auth()->user()->roles->pluck('name')[0] == 'admin'){
+            $route->update($request->route);
+			
+			if ($request->route_collector['collector_id']) {
+				$antecedente = RouteCollector::where('route_id','=',$route->id)
+											 ->where('collector_id','=',$request->route_collector['collector_id'])
+											 ->where('status','=','active')
+											 ->get();
+				if (sizeof($antecedente)==0){
+					RouteCollector::where('route_id', '=', $route->id)
+								  ->where('status', '=', 'active')
+								  ->update(['status'=>'inactive']);
 
-		$data = [
-					'status' => true,
-					'route' => $route->load('business', 'route_collector.collector.personal_information'),
-					'collector_id' => $request->route_collector['collector_id'],
-				];
+					$new_route_collector = new RouteCollector([
+																'collector_id'=>$request->route_collector['collector_id'],
+																'route_id'=>$route->id,
+																'status'=>'active'
+															   ]);
+					$new_route_collector->save();
+				}
+			}
 
-		return response()->json($data);
+			$data = [
+						'status' => true,
+						'route' => $route->load('business', 'route_collector.collector.personal_information'),
+						'collector_id' => $request->route_collector['collector_id'],
+					];
+			return response()->json($data);
+        }
+        return $this->unauthorizedAccess();
 	}
 
 	public function delete(Route $route){
-		$route->delete();
-        return response()->json(['status' => true]);
+		if (auth()->user()->roles->pluck('name')[0] == 'super.admin') {
+			$route->delete();
+	        return response()->json(['status' => true]);
+		}
+        return $this->unauthorizedAccess();
 	}
 
+	public function unauthorizedAccess(){
+		$data = [
+					'status' => false,
+					'codigo' => 401
+				];
+		return response()->json($data);
+	}
 }

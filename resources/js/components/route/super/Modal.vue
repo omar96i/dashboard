@@ -60,16 +60,6 @@
                             </div>
                         </div>
 
-                        <div class="col-12" v-if="disabled_business">
-                            <div class="mb-3">
-                                <label class="form-label">Cobrador: </label>
-                                <v-select label="label" :options="collectors_options" v-model="data.route_collector.collector_id" :reduce="option => option.id" :class="[{'is-invalid' : validation.route_collector.collector_id}]" ></v-select>
-                                <div class="invalid-feedback">
-                                    Por favor seleccione un Cobrador
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
                 <div class="modal-footer" >
@@ -85,7 +75,7 @@
     </div>
 </template>
 <script>
-import Spinner from '../custom/Spinner.vue'
+import Spinner from '../../custom/Spinner.vue'
 export default{
     props:['route', 'form', 'business_list'],
     components:{
@@ -100,9 +90,6 @@ export default{
                     'start_date':'',
                     'end_date':'',
                     'status':''
-                },
-                route_collector:{
-                    'collector_id':''
                 }
             },
             validation:{
@@ -112,9 +99,6 @@ export default{
                     'start_date':false,
                     'end_date':false,
                     'status':false
-                },
-                'route_collector':{
-                    'collector_id':false
                 }
             },
             options_status_route: [
@@ -149,18 +133,18 @@ export default{
             this.data.route.status = this.route.status
             
             this.disabled_business = true
-            for (var i = 0; i < this.route.route_collector.length; i++) {
+            /*for (var i = 0; i < this.route.route_collector.length; i++) {
                 if (this.route.route_collector[i].status=="active"){
                     this.data.route_collector.collector_id = this.route.route_collector[i].collector_id
                     break
                 }
             }
             
-            this.getCobradoresEmpresa(this.route.business_id)
+            this.getCobradoresEmpresa(this.route.business_id)*/
         }
     },
     methods:{
-        getCobradoresEmpresa(business_id){
+        /*getCobradoresEmpresa(business_id){
             if (business_id!=undefined && business_id!='') {
                 this.collectors_options = []
                 axios.get(`/Business/getCollectors/${business_id}`).then(res=>{
@@ -172,7 +156,7 @@ export default{
                     console.log(error.response)
                 })
             }
-        },
+        },*/
 
         action(){
 
@@ -183,8 +167,9 @@ export default{
                     axios.post(this.route_axios, this.data).then(res=>{
                         var index = _.findIndex(this.$parent.routes, function(o) { return o.id == res.data.route.id; });
                         this.$parent.routes[index] = res.data.route
-                        this.alert('Ruta', 'Editada con éxito', 'success')
                         this.$parent.closeModal()
+                        
+                        this.alert('Ruta', 'Editada con éxito', 'success')
                     }).catch(error=>{
                         this.alert('Ruta', 'Error en el servidor', 'error')
                         console.log(error.response)

@@ -12,7 +12,7 @@
             <div class="d-flex align-items-end row">
                 <div id="app">
                     @if(auth()->user()->roles->pluck('name')[0]=='super.admin')
-                    	<route-index role="{{ auth()->user()->roles->pluck('name')[0] }}" business_id="{{ auth()->user()->business_id }}"></route-index>
+                    	<route-super-index role="{{ auth()->user()->roles->pluck('name')[0] }}" business_id="{{ auth()->user()->business_id }}"></route-super-index>
                     @endif
                     @if(auth()->user()->roles->pluck('name')[0]=='admin')
                     	<route-admin-index role="{{ auth()->user()->roles->pluck('name')[0] }}" business_id="{{ auth()->user()->business_id }}"></route-admin-index>

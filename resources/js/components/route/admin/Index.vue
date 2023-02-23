@@ -93,7 +93,7 @@
 		</div>
 			
 		<content-spinner v-if="loading_spinner" :message="text_spinner"></content-spinner>
-		<form-modal v-if="loading_modal" :route="route" :business_list="business_list" :form="form"></form-modal>
+		<form-modal v-if="loading_modal" :route="route" :form="form"></form-modal>
 	</div>
 </template>
 <script>
@@ -109,7 +109,6 @@
 		data(){
 			return {
 				loading_modal: false,
-				business_list: [],
 				routes:[],
 				route:{},
 				form: 'insert',
@@ -125,7 +124,6 @@
 			getRoutes(){
 				axios.get(`/Route/get`).then(res=>{
 					this.routes = res.data.routes
-					this.business_list = res.data.business
 					this.loading_spinner = false
 				}).catch(error=>{
 					console.log(error.response)
@@ -151,33 +149,6 @@
 				this.form = "edit"
 				this.route = route
 				this.openModal()
-			},
-
-			eliminar(route){
-				this.$fire({
-	                title: 'Eliminar Ruta',
-	                html: `¿Está seguro de eliminar la ruta <b>${route.name}</b> de la empresa <b>${route.business.name}</b>?`,
-	                type: 'warning',
-	                showCancelButton: true,
-	                confirmButtonText: 'Eliminar',
-	                cancelButtonText: 'Cancelar',
-	                confirmButtonColor: '#FF0000',
-	            }).then((result) => {
-	                if(result.value){
-						this.loading_spinner = true
-						this.text_spinner = "Eliminando Ruta"
-						axios.post(`/Route/delete/${route.id}`).then(res=>{
-							if(res.data.status){
-			                    var index = _.findIndex(this.routes, function(o) { return o.id == route.id; });
-			                    this.routes.splice(index, 1)
-							}
-						}).catch(error=>{
-							console.log(error.response)
-						}).finally(()=>{
-							this.loading_spinner = false
-						})
-	                }
-	            });
 			},
 
 			extraerCobradorActivo(collectors){
