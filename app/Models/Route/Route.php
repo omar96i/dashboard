@@ -14,9 +14,6 @@ class Route extends Model
     protected $fillable = [
         'business_id',
         'name',
-        'start_date',
-        'end_date',
-        'status'
     ];
 
     public function business(){
@@ -29,5 +26,9 @@ class Route extends Model
 
     public function clients(){
         return $this->hasMany(RouteClient::class, 'client_id');
+    }
+
+    public function subscriptions(){
+        return $this->hasMany(RouteSubcription::class, 'route_id');
     }
 }

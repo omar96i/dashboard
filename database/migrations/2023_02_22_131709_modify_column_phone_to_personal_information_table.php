@@ -26,7 +26,7 @@ class ModifyColumnPhoneToPersonalInformationTable extends Migration
     public function down()
     {
         Schema::table('personal_information', function (Blueprint $table) {
-            //
+            $table->string('phone', 15)->change();
         });
     }
 }

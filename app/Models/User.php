@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Business\Business;
 use App\Models\Route\Route;
+use App\Models\Route\RouteSubcription;
 use App\Models\User\PersonalInformation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -60,6 +61,10 @@ class User extends Authenticatable
 
     public function routes(){
         return $this->hasMany(Route::class, 'collector_id');
+    }
+
+    public function subscription_created(){
+        return $this->hasMany(RouteSubcription::class, 'user_id');
     }
 
     // functiones
