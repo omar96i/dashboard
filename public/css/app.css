@@ -10846,3 +10846,55 @@ textarea.form-control-lg {
   top: 40%;
   width: 100%;
 }
+
+.btn-close.btn-danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-close.btn-danger:hover {
+  color: white !important;
+  background-color: #f71b31;
+  border-color: #bd2130;
+}
+
+.scroll-view {
+  height: 424px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.scroll-view::-webkit-scrollbar {
+  width: 3px;
+}
+
+.scroll-view::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.scroll-view::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+.scroll-view::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.scroll-view::-webkit-scrollbar-thumb:vertical {
+  height: 25px;
+}
+
+.scroll-view::-webkit-scrollbar-thumb:horizontal {
+  width: 25px;
+}
+
+.scroll-view:hover::-webkit-scrollbar {
+  opacity: 1;
+}
+
+.scroll-view::-webkit-scrollbar {
+  opacity: 0;
+}

@@ -10,7 +10,7 @@ use App\Models\Business\Business;
 use Spatie\Permission\Models\Role;
 
 class RouteController extends Controller {
-    
+
 	public function index(){
 		if (auth()->user()->roles->pluck('name')[0] == 'super.admin') {
 			$routes = [];
@@ -34,9 +34,40 @@ class RouteController extends Controller {
         return $this->unauthorizedAccess();
 	}
 
-	public function get(){
+	public function get(Request $request){
 		if (auth()->user()->roles->pluck('name')[0] == 'super.admin') {
-			$routes = Route::with('business', 'route_collector.collector.personal_information')->get();
+            // Filtros
+            if(isset($request->subcription)){
+                if($request->subcription){
+                    $routes = Route::whereHas('subscriptions', function($query){
+                        $query->latest()->where('status', 'active');
+                    })->get();
+                }else{
+                    $routes = Route::where(function ($query) {
+                        $query->whereDoesntHave('subscriptions')
+                              ->orWhereHas('subscriptions', function ($subquery) {
+                                  $subquery->where('created_at', function ($createdQuery) {
+                                      $createdQuery->from('route_subcriptions')
+                                                   ->selectRaw('MAX(created_at)')
+                                                   ->whereColumn('route_id', 'routes.id');
+                                  })->where('status', 'inactive');
+                              });
+                    })->get();
+                }
+            }else{
+            	$routes = Route::get();
+            }
+            if($request->business_id){
+                $routes->where('business_id', $request->business_id);
+            }
+            if($request->route){
+                $routes->where('name', 'LIKE', '%'.$request->route.'%');
+            }
+            $routes->load(['subscriptions' => function ($query) {
+                $query->orderBy('start_date', 'desc');
+            }, 'subscriptions.created_by.personal_information', 'business']);
+            // EndFiltros
+
 			$data = [
 						'status'=>true,
 						'routes'=>$routes,
@@ -78,7 +109,7 @@ class RouteController extends Controller {
 			return response()->json($data);
         }else if(auth()->user()->roles->pluck('name')[0] == 'admin'){
             $route->update($request->route);
-			
+
 			if ($request->route_collector['collector_id']) {
 				$antecedente = RouteCollector::where('route_id','=',$route->id)
 											 ->where('collector_id','=',$request->route_collector['collector_id'])

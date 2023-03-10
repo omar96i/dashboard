@@ -4,6 +4,7 @@ use App\Models\Business\Business;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Business\BusinessController;
 use App\Http\Controllers\Route\RouteController;
+use App\Http\Controllers\Route\RouteSubscriptionController;
 use App\Models\User;
 
 /*
@@ -18,6 +19,7 @@ use App\Models\User;
 */
 
 Route::get('/test', function () {
+    return auth()->user()->id;
     /*return auth()->user()->roles->pluck('name');*/
     return User::with('personal_information', 'business', 'roles')->where('id', '!=', 1)->where('business_id','=', auth()->user()->business_id )->get();
 });
@@ -57,9 +59,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['prefix' => 'Route'], function () {
         Route::get('/', [RouteController::class, 'index'])->name('route.index');
-        Route::get('/get', [RouteController::class, 'get'])->name('route.get');
+        Route::post('/get', [RouteController::class, 'get'])->name('route.get');
         Route::post('/store', [RouteController::class, 'store'])->name('route.store');
         Route::post('/update/{route}', [RouteController::class, 'update'])->name('route.update');
         Route::get('/delete/{route}', [RouteController::class, 'delete'])->name('route.delete');
+
+        Route::group(['prefix' => 'Subscription'], function () {
+            Route::post('/store/{route}', [RouteSubscriptionController::class, 'store'])->name('route.subscription.store');
+            Route::get('/get/{route}/{type}', [RouteSubscriptionController::class, 'get'])->name('route.subscription.get');
+            Route::get('/delete/{subscription}', [RouteSubscriptionController::class, 'delete'])->name('route.subscription.delete');
+        });
     });
 });

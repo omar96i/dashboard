@@ -64,7 +64,11 @@ class User extends Authenticatable
     }
 
     public function subscription_created(){
-        return $this->hasMany(RouteSubcription::class, 'user_id');
+        return $this->hasMany(RouteSubcription::class, 'created_by');
+    }
+
+    public function subscriptionsDeleted(){
+        return $this->hasMany(RouteSubcription::class, 'user_deleted_id');
     }
 
     // functiones

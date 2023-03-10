@@ -1,7 +1,7 @@
 <template>
     <!-- Modal -->
     <div class="modal fade" id="modalRoute" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalFullTitle">Formulario de Registro</h5>
@@ -30,36 +30,75 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-sm-6">
-                            <div class="mb-3">
-                                <label class="form-label">Fecha de Inicio:</label>
-                                <input type="date" :class="[{'is-invalid' : validation.route.start_date }, 'form-control']" v-model="data.route.start_date">
-                                <div class="invalid-feedback">
-                                    Por favor seleccione una Fecha Inicial
+                        <div class="col-12" v-if="form == 'edit'">
+                            <h6 class="text-muted">Suscripciones</h6>
+                            <div class="nav-align-top mb-4 ">
+                                <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+                                    <li class="nav-item">
+                                        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#nav-pill-general" aria-controls="nav-pill-general" aria-selected="true" @click="getSubscriptions('general')">
+                                        <i class='tf-icons bx bx-book-content'></i> General
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#nav-pill-activos" aria-controls="nav-pill-activos" aria-selected="false" @click="getSubscriptions('active')">
+                                        <i class='tf-icons bx bx-book-content'></i> Activas
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#nav-pill-inactivas" aria-controls="nav-pill-inactivas" aria-selected="false" @click="getSubscriptions('inactive')">
+                                        <i class='tf-icons bx bx-book-content'></i> Inactivas
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#nav-pill-crear" aria-controls="nav-pill-crear" aria-selected="false">
+                                        <i class='tf-icons bx bx-plus-medical'></i> Agregar suscripción
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content scroll-view">
+                                    <div class="tab-pane fade active show"  id="nav-pill-general" role="tabpanel">
+                                        <div class="list-group" v-if="subscriptions.length == 0">
+                                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                                <small>Actualmente no hay registros.</small>
+                                            </a>
+                                        </div>
+                                        <div v-if="loading_view_tab_general">
+                                            <molecules-subcription-list v-for="(subscription, index) in subscriptions" :key="index" :subscription="subscription"></molecules-subcription-list>
+                                        </div>
+                                        <content-spinner v-if="loading_spinner_tab_general" :message="'Cargando contenido...'"></content-spinner>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-pill-activos" role="tabpanel">
+                                        <div class="demo-inline-spacing mt-3">
+                                            <div class="list-group" v-if="subscriptions.length == 0">
+                                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                                    <small>Actualmente no hay registros.</small>
+                                                </a>
+                                            </div>
+                                            <div v-if="loading_view_tab_active">
+                                                <molecules-subcription-list v-for="(subscription, index) in subscriptions" :key="index" :subscription="subscription"></molecules-subcription-list>
+                                            </div>
+                                            <content-spinner v-if="loading_spinner_tab_active" :message="'Cargando contenido...'"></content-spinner>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-pill-inactivas" role="tabpanel">
+                                        <div class="demo-inline-spacing mt-3">
+                                            <div class="list-group" v-if="subscriptions.length == 0">
+                                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                                    <small>Actualmente no hay registros.</small>
+                                                </a>
+                                            </div>
+                                            <div v-if="loading_view_tab_inactive">
+                                                <molecules-subcription-list v-for="(subscription, index) in subscriptions" :key="index" :subscription="subscription"></molecules-subcription-list>
+                                            </div>
+                                            <content-spinner v-if="loading_spinner_tab_inactive" :message="'Cargando contenido...'"></content-spinner>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-pill-crear" role="tabpanel">
+                                        <form-subcription :route="route"></form-subcription>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-12 col-sm-6">
-                            <div class="mb-3">
-                                <label class="form-label">Fecha Finalizacion:</label>
-                                <input type="date" :class="[{'is-invalid' : validation.route.end_date }, 'form-control']" v-model="data.route.end_date">
-                                <div class="invalid-feedback">
-                                    Por favor seleccione una Fecha Final
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-6" v-if="disabled_business">
-                            <div class="mb-3">
-                                <label class="form-label">Estado:</label>
-                                <v-select label="label" :options="options_status_route" v-model="data.route.status" :reduce="option => option.id" :class="[{'is-invalid' : validation.route.status}]"></v-select>
-                                <div class="invalid-feedback">
-                                    Por favor seleccione una Fecha Inicial
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
                 <div class="modal-footer" >
@@ -68,18 +107,23 @@
                     </button>
                     <button type="button" @click="action()" class="btn btn-primary" >{{ (form == 'insert') ? 'Agregar' : 'Actualizar' }}</button>
                 </div>
-                
+
                 <content-spinner v-if="loading_spinner" :message="text_spinner"></content-spinner>
             </div>
         </div>
     </div>
 </template>
 <script>
+
 import Spinner from '../../custom/Spinner.vue'
+import FormSubcription from './form/Subcription.vue'
+import MoleculesSubcriptionList from './molecules/SubcriptionList.vue'
 export default{
     props:['route', 'form', 'business_list'],
     components:{
         'content-spinner': Spinner,
+        FormSubcription,
+        MoleculesSubcriptionList
     },
     data(){
         return{
@@ -87,33 +131,37 @@ export default{
                 route:{
                     'business_id':'',
                     'name':'',
-                    'start_date':'',
-                    'end_date':'',
-                    'status':''
                 }
             },
             validation:{
                 'route':{
                     'business_id':false,
                     'name':false,
-                    'start_date':false,
-                    'end_date':false,
-                    'status':false
                 }
             },
-            options_status_route: [
-                            {'label':'ACTIVA', 'id':'active'},
-                            {'label':'INACTIVA', 'id':'inactive'}
-                          ],
             business_options:[],
             collectors_options:[],
             route_axios: (this.form == 'insert')? '/Route/store' : `/Route/update/${this.route.id}`,
             loading_spinner: false,
             disabled_business: false,
-            text_spinner: "cargando"
+            text_spinner: "cargando",
+            isActive : false,
+            loading_spinner_tab_general : false,
+            loading_view_tab_general : true,
+            loading_spinner_tab_active : false,
+            loading_view_tab_active : false,
+            loading_spinner_tab_inactive : false,
+            loading_view_tab_inactive : false,
+            subscriptions: [],
+            state : 'general'
         }
     },
     created(){
+        if(this.route.subscriptions){
+            this.subscriptions = this.route.subscriptions
+        }
+
+
         if (this.$parent.business_id) {
             this.data.route.business_id = parseInt(this.$parent.business_id);
         }
@@ -131,32 +179,40 @@ export default{
             this.data.route.start_date = this.route.start_date
             this.data.route.end_date = this.route.end_date
             this.data.route.status = this.route.status
-            
+
             this.disabled_business = true
-            /*for (var i = 0; i < this.route.route_collector.length; i++) {
-                if (this.route.route_collector[i].status=="active"){
-                    this.data.route_collector.collector_id = this.route.route_collector[i].collector_id
-                    break
-                }
-            }
-            
-            this.getCobradoresEmpresa(this.route.business_id)*/
         }
     },
     methods:{
-        /*getCobradoresEmpresa(business_id){
-            if (business_id!=undefined && business_id!='') {
-                this.collectors_options = []
-                axios.get(`/Business/getCollectors/${business_id}`).then(res=>{
-                    console.log(res.data)
-                    for (var i = 0; i < res.data.collectors.length; i++) {
-                        this.collectors_options.push( {'label':res.data.collectors[i].personal_information.full_name, 'id':res.data.collectors[i].id} )
-                    }
-                }).catch(error=>{
-                    console.log(error.response)
-                })
+        getSubscriptions(type = false){
+            if(type != false){
+                this.state = type
             }
-        },*/
+            this.subscriptions = []
+            if(this.route.subscriptions){
+                this.resetVariables(this.state, true)
+                axios.get(`/Route/Subscription/get/${this.route.id}/${this.state}`).then(res=>{
+                    this.subscriptions = res.data.subscriptions
+                }).catch(error=>{
+                    this.alert('Ruta', 'Error en el servidor - getSubscriptions', 'error')
+                    console.log(error.response)
+                }).finally(()=>{
+                    this.resetVariables(this.state, false)
+                })
+            }else{
+                this.resetVariables(this.state, false)
+            }
+
+        },
+
+        resetVariables(type, instance){
+            this.loading_spinner_tab_active = (type == 'active' && instance == true) ? true : false
+            this.loading_spinner_tab_general = (type == 'general' && instance == true) ? true : false
+            this.loading_spinner_tab_inactive = (type == 'inactive' && instance == true) ? true : false
+            this.loading_view_tab_active = (type == 'active' && instance == false) ? true : false
+            this.loading_view_tab_general = (type == 'general' && instance == false) ? true : false
+            this.loading_view_tab_inactive = (type == 'inactive' && instance == false) ? true : false
+        },
 
         action(){
 
@@ -168,7 +224,7 @@ export default{
                         var index = _.findIndex(this.$parent.routes, function(o) { return o.id == res.data.route.id; });
                         this.$parent.routes[index] = res.data.route
                         this.$parent.closeModal()
-                        
+
                         this.alert('Ruta', 'Editada con éxito', 'success')
                     }).catch(error=>{
                         this.alert('Ruta', 'Error en el servidor', 'error')
@@ -186,7 +242,7 @@ export default{
                 }
             }else if (this.form=="insert") {
                 if (this.validationForm()){
-                    let temp =  {   
+                    let temp =  {
                                     'business_id':this.data.route.business_id,
                                     'name':this.data.route.name,
                                     'start_date':this.data.route.start_date,

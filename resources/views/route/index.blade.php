@@ -6,23 +6,16 @@
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12 mb-4 order-0">
-        <div class="card">
-            <div class="d-flex align-items-end row">
-                <div id="app">
-                    @if(auth()->user()->roles->pluck('name')[0]=='super.admin')
-                    	<route-super-index role="{{ auth()->user()->roles->pluck('name')[0] }}" business_id="{{ auth()->user()->business_id }}"></route-super-index>
-                    @endif
-                    @if(auth()->user()->roles->pluck('name')[0]=='admin')
-                    	<route-admin-index role="{{ auth()->user()->roles->pluck('name')[0] }}" business_id="{{ auth()->user()->business_id }}"></route-admin-index>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="app">
+    @if(auth()->user()->roles->pluck('name')[0]=='super.admin')
+    <route-super-index role="{{ auth()->user()->roles->pluck('name')[0] }}" business_id="{{ auth()->user()->business_id }}"></route-super-index>
+    @endif
+    @if(auth()->user()->roles->pluck('name')[0]=='admin')
+        <route-admin-index role="{{ auth()->user()->roles->pluck('name')[0] }}" business_id="{{ auth()->user()->business_id }}"></route-admin-index>
+    @endif
 </div>
 @endsection
 
 @section('scripts')
+<script src="{{ mix('/js/routes.js') }}"></script>
 @endsection
