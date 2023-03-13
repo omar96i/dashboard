@@ -11,7 +11,6 @@ class RouteSubscriptionController extends Controller
 {
     public function store(Route $route, Request $request){
         $subscription = new RouteSubcription($request->all());
-        $subscription->created_by = auth()->user()->id;
         $subscription->route_id = $route->id;
         $subscription->save();
         return response()->json(['status' => true, 'subscription' => $subscription]);

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Route\Route;
 use App\Models\Route\RouteCollector;
 use App\Models\Business\Business;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class RouteController extends Controller {
@@ -75,7 +76,23 @@ class RouteController extends Controller {
 				    ];
 			return response()->json($data);
         }else if(auth()->user()->roles->pluck('name')[0] == 'admin'){
-            $routes = Route::with('business', 'route_collector.collector.personal_information')->where('business_id','=', auth()->user()->business_id )->get();
+            $routes = Route::select(['*', DB::raw('(CASE
+                    WHEN EXISTS (SELECT 1 FROM route_subcriptions WHERE route_id = routes.id AND status = "active")
+                    THEN "active"
+                    WHEN NOT EXISTS (SELECT 1 FROM route_subcriptions WHERE route_id = routes.id) OR EXISTS (SELECT 1 FROM route_subcriptions WHERE route_id = routes.id AND status = "inactive")
+                    THEN "inactive"
+                    ELSE "unknown"
+                END) AS status')])
+            ->where('business_id', auth()->user()->business_id)
+            ->get();
+            if($request->route){
+                $routes->where('name', 'LIKE', '%'.$request->route.'%');
+            }
+
+            $routes->load(['subscriptions' => function ($query) {
+                $query->orderBy('start_date', 'desc');
+            }, 'subscriptions.created_by.personal_information', 'business', 'route_collector.collector.personal_information']);
+
             $data = [
 						'status'=>true,
 						'routes'=>$routes,

@@ -45,5 +45,9 @@ class RouteSubcription extends Model
             $model->user_deleted_id = auth()->check() ? auth()->user()->id : null;
             $model->save();
         });
+
+        static::saving(function ($model){
+            $model->created_by = auth()->user()->id;
+        });
     }
 }

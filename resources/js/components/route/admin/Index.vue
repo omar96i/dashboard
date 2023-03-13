@@ -1,6 +1,6 @@
 <template>
 	<div class="m-2 p-2">
-		
+
 		<div class="col-12 m-0 p-0" v-if="role=='super.admin'">
 			<button class="btn btn-primary" @click="openModal()"> <i class='bx bxs-business'></i> NUEVA RUTA</button>
 		</div>
@@ -17,7 +17,7 @@
 				      <div class="card-header d-flex align-items-center justify-content-between pb-0">
 				        <div class="card-title mb-0">
 				          <h5 class="m-0 me-2 text-dark text-uppercase">{{ route.name }}</h5>
-				          <small class="text-muted"><b>{{ route.start_date }}</b> hasta <b>{{ route.end_date }}</b> </small>
+				          <small class="text-muted"><b>{{ (route.subscriptions.length > 0) ? route.subscriptions[0].start_date : 'sin definir' }}</b> hasta <b>{{ (route.subscriptions.length > 0) ? route.subscriptions[0].end_date : 'sin definir' }}</b> </small>
 				        </div>
 				      </div>
 				      <div class="card-body">
@@ -76,7 +76,7 @@
 				            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
 				              <div class="col">
 				                <h6 class="mb-0">Estado de la Ruta</h6>
-				                <small class="text-sucess">{{ (route.status == "active")? "ACTIVA" : "INACTIVA" }}</small>
+				                <small class="text-sucess"><i class="bx bx-check-circle text-success" v-if="route.status == 'active'"></i><i class='bx bxs-x-circle text-danger' v-else></i></small>
 				              </div>
 				            </div>
 				          </li>
@@ -86,12 +86,11 @@
 				        </ul>
 				      </div>
 				    </div>
-					
 				</div>
 			</div>
 
 		</div>
-			
+
 		<content-spinner v-if="loading_spinner" :message="text_spinner"></content-spinner>
 		<form-modal v-if="loading_modal" :route="route" :form="form"></form-modal>
 	</div>
@@ -113,7 +112,11 @@
 				route:{},
 				form: 'insert',
 				loading_spinner: true,
-				text_spinner: "Cargando Rutas"
+				text_spinner: "Cargando Rutas",
+                filtro : {
+                    'route' : '',
+                    'subcription' : ''
+                }
 			}
 		},
 		created(){
@@ -122,7 +125,8 @@
 		methods:{
 
 			getRoutes(){
-				axios.get(`/Route/get`).then(res=>{
+				axios.post(`/Route/get`, this.filtro).then(res=>{
+                    console.log(res.data)
 					this.routes = res.data.routes
 					this.loading_spinner = false
 				}).catch(error=>{
@@ -136,7 +140,7 @@
 					$("#modalRoute").modal('show')
 				},200)
 			},
-			
+
 			closeModal(){
 				$("#modalRoute").modal('hide')
 				setTimeout(()=>{
@@ -156,7 +160,7 @@
 				collectors.forEach(reg => {
 					if (reg.status=="active") {
 						texto = reg.collector.personal_information.full_name
-					} 
+					}
                 });
 				return texto
 			}
